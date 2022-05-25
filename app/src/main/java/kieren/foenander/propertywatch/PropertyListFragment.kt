@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kieren.foenander.propertywatch.database.PropertyListViewModel
+import kieren.foenander.propertywatch.database.PropertyRepository
 
 class PropertyListFragment: Fragment() {
 
@@ -16,19 +19,13 @@ class PropertyListFragment: Fragment() {
         fun newInstance() = PropertyListFragment()
     }
 
-    private val mPropertyTestList: ArrayList <Property> = ArrayList()
-    private lateinit var mPropertyViewModel: PropertyViewModel
+    private lateinit var mPropertyListViewModel: PropertyListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
-        mPropertyTestList.add(Property("1", "22 yeet stree", 400000, "0477020777", 16.928893272553427, -16.928893272553427))
-        mPropertyTestList.add(Property("2", "22 yeet stree", 400000, "0477020777", 16.928893272553427, -16.928893272553427))
-        mPropertyTestList.add(Property("3", "22 yeet stree", 400000, "0477020777", 16.928893272553427, -16.928893272553427))
-        mPropertyTestList.add(Property("4", "22 yeet stree", 400000, "0477020777", 16.928893272553427, -16.928893272553427))
-
         val context = activity as ViewModelStoreOwner
-        mPropertyViewModel = ViewModelProvider(context).get(PropertyViewModel::class.java)
+        mPropertyListViewModel = ViewModelProvider(context).get(PropertyListViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -39,8 +36,14 @@ class PropertyListFragment: Fragment() {
         val recyclerView = inflater.inflate(R.layout.fragment_list, container, false) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        recyclerView.adapter = PropertyAdapter(mPropertyTestList)
-
+        mPropertyListViewModel.propertyList.observe(
+            viewLifecycleOwner, Observer { propertyList ->
+                if (propertyList.isEmpty()){
+                    PropertyRepository.loadTestData()
+                    return@Observer
+                }
+                recyclerView.adapter = PropertyAdapter(propertyList)
+            })
         return recyclerView
     }
 }
