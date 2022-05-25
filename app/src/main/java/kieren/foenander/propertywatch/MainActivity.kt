@@ -4,22 +4,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import kieren.foenander.propertywatch.database.PropertyListViewModel
+import kieren.foenander.propertywatch.database.PropertyRepository
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mPropertyViewModel: PropertyViewModel
+    private lateinit var mPropertyListViewModel: PropertyListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mPropertyViewModel = ViewModelProvider(this).get(PropertyViewModel::class.java)
+        PropertyRepository.initialize(this)
+
+        mPropertyListViewModel = ViewModelProvider(this).get(PropertyListViewModel::class.java)
+
+/*
+
+        mPropertyListViewModel = ViewModelProvider(this).get(PropertyListViewModel::class.java)
 
 
-        mPropertyViewModel.selectedProperty.observe(this){
+        mPropertyListViewModel.propertyList.observe(this){
             loadFragment(PropertyListFragment.newInstance())
 
         }
+*/
 
         if(savedInstanceState == null){
             loadFragment(PropertyListFragment.newInstance())

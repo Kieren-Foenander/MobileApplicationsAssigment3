@@ -8,9 +8,11 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
+import kieren.foenander.propertywatch.database.Property
+import kieren.foenander.propertywatch.database.PropertyListViewModel
 
 class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<PropertyAdapter.PropertyViewHolder>() {
-    private lateinit var mPropertyViewModel: PropertyViewModel
+    private lateinit var mPropertyListViewModel: PropertyListViewModel
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -20,7 +22,7 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
 
         val viewModelStoreOwner = parent.context as ViewModelStoreOwner
 
-        mPropertyViewModel = ViewModelProvider(viewModelStoreOwner).get(PropertyViewModel::class.java)
+        mPropertyListViewModel = ViewModelProvider(viewModelStoreOwner).get(PropertyListViewModel::class.java)
 
         return PropertyViewHolder(view)
 
@@ -43,7 +45,7 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
 
         override fun onClick(v: View){
             Log.d("PropertyAdapter", property.address + " selected")
-            mPropertyViewModel.selectedProperty.value = property
+            //mPropertyListViewModel.selectedProperty.value = property
         }
 
         fun bind(property: Property){
@@ -59,7 +61,7 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
             priceView.text = property.price.toString()
             phoneView.text = property.phone
             latView.text = property.lat.toString()
-            longView.text = property.long.toString()
+            longView.text = property.lon.toString()
 
 
         }
