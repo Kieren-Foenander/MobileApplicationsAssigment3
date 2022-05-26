@@ -4,6 +4,7 @@ import android.security.identity.AccessControlProfileId
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
+import java.io.Serializable
 import java.util.*
 
 @Entity
@@ -14,4 +15,4 @@ data class Property (
     @NotNull var phone : String,
     var lat : Double = 0.0,
     var lon : Double = 0.0
-)
+): Serializable
