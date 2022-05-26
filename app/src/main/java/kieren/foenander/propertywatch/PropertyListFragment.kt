@@ -39,7 +39,7 @@ class PropertyListFragment: Fragment() {
         mPropertyListViewModel.propertyList.observe(
             viewLifecycleOwner, Observer { propertyList ->
                 if (propertyList.isEmpty()){
-                    PropertyRepository.loadTestData()
+                    PropertyRepository.loadData()
                     return@Observer
                 }
                 recyclerView.adapter = PropertyAdapter(propertyList)
