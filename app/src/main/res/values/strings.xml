@@ -3,4 +3,5 @@
     <string name="email">Email a Friend</string>
     <string name="email_subject">Investment Property Advice</string>
     <string name="email_message">I would like to recommend this property at %s listed for $%s</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

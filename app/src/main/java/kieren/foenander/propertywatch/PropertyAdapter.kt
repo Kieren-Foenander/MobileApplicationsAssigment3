@@ -1,6 +1,7 @@
 package kieren.foenander.propertywatch
 
 import android.content.Intent
+import android.content.Intent.EXTRA_INTENT
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +41,7 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
     inner class PropertyViewHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
         lateinit var mproperty: Property
         private var v = view
-        val emailButton = view.findViewById(R.id.button) as Button
+        private val emailButton = view.findViewById(R.id.button) as Button
 
 
         init {
@@ -60,6 +61,11 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
             } else {
                 Log.d("PropertyAdapter", mproperty.address + " selected")
                 //init map function here
+
+                val intent = Intent(v.context, MapsActivity::class.java)
+                intent.putExtra(EXTRA_INTENT , mproperty)
+
+                v.context.startActivity(intent)
             }
         }
 
