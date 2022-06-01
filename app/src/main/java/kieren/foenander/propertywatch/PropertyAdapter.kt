@@ -1,9 +1,11 @@
 package kieren.foenander.propertywatch
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -36,20 +38,33 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
     }
 
     inner class PropertyViewHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
-        lateinit var property: Property
+        lateinit var mproperty: Property
+        private var v = view
+        val emailButton = view.findViewById(R.id.button) as Button
+
 
         init {
             itemView.setOnClickListener(this)
+            emailButton.setOnClickListener(this)
 
         }
 
         override fun onClick(v: View){
-            Log.d("PropertyAdapter", property.address + " selected")
-            //mPropertyListViewModel.selectedProperty.value = property
+
+            if(v?.id == R.id.button){
+                when(v?.id){
+                    R.id.button->{
+                        sendEmail()
+                    }
+                }
+            } else {
+                Log.d("PropertyAdapter", mproperty.address + " selected")
+                //init map function here
+            }
         }
 
         fun bind(property: Property){
-            this.property = property
+            this.mproperty = property
 
             val addressView: TextView = view.findViewById(R.id.address)
             val priceView: TextView = view.findViewById(R.id.price)
@@ -59,9 +74,21 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
             priceView.text = property.price.toString()
             phoneView.text = property.phone
 
-
-
         }
 
+        fun sendEmail(){
+            var emailSubject = v.context.resources.getString(R.string.email_subject)
+            var emailMessage = v.context.resources.getString(R.string.email_message, mproperty.address, mproperty.price.toString())
+
+            val intent = Intent(Intent.ACTION_SEND)
+
+            intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
+            intent.putExtra(Intent.EXTRA_TEXT, emailMessage)
+
+            intent.type = "text/plain"
+
+            v.context.startActivity(Intent.createChooser(intent, "Send using:"))
+
+        }
     }
 }
