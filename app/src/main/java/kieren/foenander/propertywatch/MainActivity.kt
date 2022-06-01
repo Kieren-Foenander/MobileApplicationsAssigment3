@@ -1,7 +1,10 @@
 package kieren.foenander.propertywatch
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kieren.foenander.propertywatch.database.PropertyListViewModel
@@ -18,17 +21,6 @@ class MainActivity : AppCompatActivity() {
         PropertyRepository.initialize(this)
 
         mPropertyListViewModel = ViewModelProvider(this).get(PropertyListViewModel::class.java)
-
-/*
-
-        mPropertyListViewModel = ViewModelProvider(this).get(PropertyListViewModel::class.java)
-
-
-        mPropertyListViewModel.propertyList.observe(this){
-            loadFragment(PropertyListFragment.newInstance())
-
-        }
-*/
 
         if(savedInstanceState == null){
             loadFragment(PropertyListFragment.newInstance())
