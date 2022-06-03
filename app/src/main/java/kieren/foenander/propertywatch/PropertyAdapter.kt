@@ -38,9 +38,9 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
     }
 
     inner class PropertyViewHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
-        lateinit var mproperty: Property
+        lateinit var mProperty: Property
         private var v = view
-        val emailButton = view.findViewById(R.id.button) as Button
+        private val emailButton = view.findViewById(R.id.button) as Button
 
 
         init {
@@ -58,27 +58,29 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
                     }
                 }
             } else {
-                Log.d("PropertyAdapter", mproperty.address + " selected")
-                //init map function here
+                val intent = Intent(v.context, MapsActivity::class.java)
+                intent.putExtra("property" , mProperty)
+
+                v.context.startActivity(intent)
             }
         }
 
         fun bind(property: Property){
-            this.mproperty = property
+            this.mProperty = property
 
             val addressView: TextView = view.findViewById(R.id.address)
             val priceView: TextView = view.findViewById(R.id.price)
             val phoneView: TextView = view.findViewById(R.id.phone)
 
             addressView.text = property.address
-            priceView.text = property.price.toString()
-            phoneView.text = property.phone
+            priceView.text = "Price: $" + property.price.toString()
+            phoneView.text = "Phone: " + property.phone
 
         }
 
         fun sendEmail(){
             var emailSubject = v.context.resources.getString(R.string.email_subject)
-            var emailMessage = v.context.resources.getString(R.string.email_message, mproperty.address, mproperty.price.toString())
+            var emailMessage = v.context.resources.getString(R.string.email_message, mProperty.address, mProperty.price.toString())
 
             val intent = Intent(Intent.ACTION_SEND)
 
