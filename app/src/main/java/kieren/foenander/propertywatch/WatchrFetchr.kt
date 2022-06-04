@@ -21,7 +21,7 @@ class WatchrFetchr {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://jellymud.com/api/properties.json")
+            .baseUrl("http://jellymud.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -49,6 +49,9 @@ class WatchrFetchr {
                     ?: mutableListOf()
 
                 responseLiveData.value = propertyItems
+                for (item in propertyItems){
+                    Log.d(TAG, item.address)
+                }
             }
         })
 
