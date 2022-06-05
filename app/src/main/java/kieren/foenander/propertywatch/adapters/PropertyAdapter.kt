@@ -1,7 +1,6 @@
-package kieren.foenander.propertywatch
+package kieren.foenander.propertywatch.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
+import kieren.foenander.propertywatch.MapsActivity
+import kieren.foenander.propertywatch.R
 import kieren.foenander.propertywatch.database.Property
 import kieren.foenander.propertywatch.database.PropertyListViewModel
 
@@ -53,7 +54,7 @@ class PropertyAdapter(var properties: List<Property>): RecyclerView.Adapter<Prop
 
             if(v?.id == R.id.button){
                 when(v?.id){
-                    R.id.button->{
+                    R.id.button ->{
                         sendEmail()
                     }
                 }

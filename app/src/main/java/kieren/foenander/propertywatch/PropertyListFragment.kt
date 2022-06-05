@@ -1,7 +1,6 @@
 package kieren.foenander.propertywatch
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kieren.foenander.propertywatch.api.PropertyItem
+import kieren.foenander.propertywatch.adapters.PropertyAdapter
 import kieren.foenander.propertywatch.database.Property
 import kieren.foenander.propertywatch.database.PropertyListViewModel
-import kieren.foenander.propertywatch.database.PropertyRepository
 
 class PropertyListFragment: Fragment() {
 
@@ -42,41 +40,14 @@ class PropertyListFragment: Fragment() {
         val recyclerView = inflater.inflate(R.layout.fragment_list, container, false) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val apiProperty = mPropertyWatchrViewModel.propertyItemLiveData.value
-        if (apiProperty != null) {
-            Log.d("yeet", apiProperty.get(0).address.toString())
-        }
-
         mPropertyWatchrViewModel.propertyItemLiveData.observe(
-            viewLifecycleOwner, Observer { propertyItemLiveData->
-                if (apiProperty != null) {
-                    Log.d("yeet", apiProperty.get(0).address.toString())
+            viewLifecycleOwner, Observer { propertyItems ->
+                for (item in propertyItems){
+                    mPropertyArray.add(Property(item.id, item.address, item.price, item.phone, item.lat, item.lon))
                 }
+                recyclerView.adapter = PropertyAdapter(mPropertyArray)
             }
         )
-
-        if (apiProperty != null){
-            for(i in 0 until (apiProperty.size -1)){
-                val id = apiProperty.get(i).id
-                val address = apiProperty.get(i).address
-                val price = apiProperty.get(i).price
-                val phone = apiProperty.get(i).phone
-                val lat = apiProperty.get(i).lat
-                val lon = apiProperty.get(i).lon
-
-                mPropertyArray.add(Property(id, address, price, phone, lat, lon))
-            }
-        }
-
-
-        mPropertyListViewModel.propertyList.observe(
-            viewLifecycleOwner, Observer { propertyList ->
-                if (propertyList.isEmpty()){
-                    PropertyRepository.loadData(mPropertyArray)
-                    return@Observer
-                }
-                recyclerView.adapter = PropertyAdapter(propertyList)
-            })
         return recyclerView
     }
 }

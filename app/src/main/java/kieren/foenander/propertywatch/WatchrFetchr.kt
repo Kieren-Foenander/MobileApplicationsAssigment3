@@ -49,12 +49,8 @@ class WatchrFetchr {
                     ?: mutableListOf()
 
                 responseLiveData.value = propertyItems
-                for (item in propertyItems){
-                    Log.d(TAG, item.address)
-                }
             }
         })
-
         return responseLiveData
     }
 }
