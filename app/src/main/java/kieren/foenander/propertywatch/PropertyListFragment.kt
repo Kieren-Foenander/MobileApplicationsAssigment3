@@ -10,8 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kieren.foenander.propertywatch.adapters.PropertyAdapter
+import kieren.foenander.propertywatch.database.Property
 import kieren.foenander.propertywatch.database.PropertyListViewModel
-import kieren.foenander.propertywatch.database.PropertyRepository
 
 class PropertyListFragment: Fragment() {
 
@@ -20,12 +21,15 @@ class PropertyListFragment: Fragment() {
     }
 
     private lateinit var mPropertyListViewModel: PropertyListViewModel
+    private lateinit var mPropertyWatchrViewModel: PropertyWatchrViewModel
+    private var mPropertyArray: ArrayList<Property> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
         val context = activity as ViewModelStoreOwner
         mPropertyListViewModel = ViewModelProvider(context).get(PropertyListViewModel::class.java)
+        mPropertyWatchrViewModel = ViewModelProvider(context).get(PropertyWatchrViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -36,14 +40,14 @@ class PropertyListFragment: Fragment() {
         val recyclerView = inflater.inflate(R.layout.fragment_list, container, false) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        mPropertyListViewModel.propertyList.observe(
-            viewLifecycleOwner, Observer { propertyList ->
-                if (propertyList.isEmpty()){
-                    PropertyRepository.loadData()
-                    return@Observer
+        mPropertyWatchrViewModel.propertyItemLiveData.observe(
+            viewLifecycleOwner, Observer { propertyItems ->
+                for (item in propertyItems){
+                    mPropertyArray.add(Property(item.id, item.address, item.price, item.phone, item.lat, item.lon))
                 }
-                recyclerView.adapter = PropertyAdapter(propertyList)
-            })
+                recyclerView.adapter = PropertyAdapter(mPropertyArray)
+            }
+        )
         return recyclerView
     }
 }

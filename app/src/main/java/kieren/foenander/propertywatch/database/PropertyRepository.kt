@@ -60,7 +60,7 @@ class PropertyRepository private constructor(context: Context) {
 
         fun get(): PropertyRepository {
             return INSTANCE ?:
-            throw IllegalStateException("DogRepository not initialized")
+            throw IllegalStateException("PropertyRepository not initialized")
         }
 /*
         fun loadTestData()
@@ -83,8 +83,8 @@ class PropertyRepository private constructor(context: Context) {
         }
 */
 
-        fun loadData() {
-            val propertyArray: ArrayList<Property> = ArrayList()
+        fun loadData(propertyArray: ArrayList<Property>) {
+            /*val propertyArray: ArrayList<Property> = ArrayList()
             propertyArray.add(Property(
                 address="149-153 Bunda Street, Cairns",
                 price=200000,
@@ -114,7 +114,7 @@ class PropertyRepository private constructor(context: Context) {
                 address="6-8 Quigley Street, Manunda",
                 price=455000,
                 phone="0403404666",
-                lat=-16.929026, lon=145.762279))
+                lat=-16.929026, lon=145.762279))*/
             INSTANCE?.addProperties(propertyArray)
         }
     }
